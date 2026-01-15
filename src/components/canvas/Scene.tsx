@@ -5,9 +5,11 @@ import { Suspense } from 'react';
 import { OrbitControls, PerspectiveCamera, Environment, Stars } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing';
+import { useStore } from '@/store/useStore';
 
 import Globe from './Globe';
 import FloatingData from './FloatingData';
+import CameraRig from './CameraRig';
 
 // Placeholder for a loading state component
 function Loader() {
@@ -15,6 +17,9 @@ function Loader() {
 }
 
 export default function Scene() {
+    const { activeView } = useStore();
+    const enableOrbit = activeView === 'OVERVIEW';
+
     return (
         <Canvas
             shadows
@@ -22,8 +27,20 @@ export default function Scene() {
             gl={{ antialias: false, stencil: false, depth: true }} // Antialias off for postprocessing usually better, or handle carefully
             camera={{ position: [0, 0, 12], fov: 45 }}
         >
+            <CameraRig />
             <PerspectiveCamera makeDefault position={[0, 0, 14]} fov={50} />
-            <OrbitControls makeDefault enableZoom={true} maxDistance={20} minDistance={5} />
+
+            {/* Only allow manual control in Overview mode */}
+            <OrbitControls
+                makeDefault
+                enableZoom={true}
+                maxDistance={20}
+                minDistance={5}
+                enabled={enableOrbit}
+                enableDamping={true}
+                autoRotate={activeView === 'OVERVIEW'} // Subtle spin only in overview
+                autoRotateSpeed={0.5}
+            />
 
             <color attach="background" args={['#050505']} />
             <fog attach="fog" args={['#050505', 5, 30]} />
