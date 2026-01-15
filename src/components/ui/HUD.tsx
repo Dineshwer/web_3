@@ -5,6 +5,7 @@ import { useStore } from '@/store/useStore';
 import styles from './HUD.module.css';
 import dashboardStyles from './Dashboard.module.css';
 import Navigation from './Navigation';
+import OperationsPanel from './OperationsPanel';
 import NetworkPanel from './panels/NetworkPanel';
 import ThreatPanel from './panels/ThreatPanel';
 import SystemPanel from './panels/SystemPanel';
@@ -45,7 +46,7 @@ export default function HUD() {
                     <div className={styles.header} style={{ width: '100%', marginBottom: 'auto' }}>
                         <div className="pointer-events-auto">
                             <h1 className={styles.title}>SENTINEL</h1>
-                            <div className={styles.subtitle}>SECURE_DASHBOARD // V.3.2.0 // VIEW: {activeView}</div>
+                            <div className={styles.subtitle}>SECURE_DASHBOARD // V.3.3.0 // VIEW: {activeView}</div>
                         </div>
                         <div className={styles.panel}>
                             <div>SYS.TIME: {time}</div>
@@ -106,6 +107,9 @@ export default function HUD() {
                         </div>
                     </div>
                 </div>
+
+                {/* Right Operations Panel */}
+                <OperationsPanel />
             </div>
         </>
     );
