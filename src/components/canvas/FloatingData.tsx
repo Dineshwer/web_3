@@ -31,8 +31,7 @@ function Block({ id, position, initialColor }: { id: string, position: [number, 
             )
         }
 
-        if (ref.current) { // Check the canonical ref from cannon which is attached to the mesh
-            // Cast the material to MeshStandardMaterial to access emissive properties safety
+        if (ref.current) {
             const material = (ref.current as Mesh).material as MeshStandardMaterial;
 
             if (material && 'emissive' in material) {
@@ -43,9 +42,11 @@ function Block({ id, position, initialColor }: { id: string, position: [number, 
                     material.emissiveIntensity = pulse * 2;
                 } else if (hovered) {
                     material.emissive.setHex(0x00f3ff);
-                    material.emissiveIntensity = 0.5;
+                    material.emissiveIntensity = 1.2;
                 } else {
-                    material.emissiveIntensity = 0;
+                    // Subtle edge glow for visibility
+                    material.emissive.setHex(0x003344);
+                    material.emissiveIntensity = 0.3;
                 }
             }
         }
@@ -63,7 +64,15 @@ function Block({ id, position, initialColor }: { id: string, position: [number, 
         >
             <boxGeometry args={[0.5, 0.5, 0.5]} />
 
-            <meshStandardMaterial color={color} transparent opacity={0.9} roughness={0.2} metalness={0.8} />
+            <meshStandardMaterial
+                color={color}
+                transparent
+                opacity={0.95}
+                roughness={0.3}
+                metalness={0.9}
+                emissive="#003344"
+                emissiveIntensity={0.3}
+            />
         </mesh>
     );
 }
@@ -77,7 +86,7 @@ export default function FloatingData({ count = 20 }) {
                 (Math.random() - 0.5) * 15,
                 (Math.random() - 0.5) * 15
             ] as [number, number, number],
-            color: Math.random() > 0.5 ? '#00f3ff' : '#222222'
+            color: Math.random() > 0.5 ? '#00f3ff' : '#1a1a1a' // Dark gray with subtle visibility
         }));
     }, [count]);
 
