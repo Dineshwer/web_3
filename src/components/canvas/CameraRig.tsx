@@ -8,9 +8,15 @@ import { useStore } from '@/store/useStore';
 
 export default function CameraRig() {
     const { camera } = useThree();
-    const { activeView } = useStore();
+    const { activeView, isSystemReady } = useStore();
 
     useEffect(() => {
+        // Initial Position (Boot)
+        if (!isSystemReady) {
+            camera.position.set(0, 0, 50);
+            return;
+        }
+
         const targetPos = new Vector3(0, 0, 14);
 
         // Define camera positions for each view
@@ -35,11 +41,11 @@ export default function CameraRig() {
             x: targetPos.x,
             y: targetPos.y,
             z: targetPos.z,
-            duration: 1.5,
+            duration: 2.5, // Slower fly-in for drama
             ease: 'power3.inOut' // Cinematic ease
         });
 
-    }, [activeView, camera]);
+    }, [activeView, isSystemReady, camera]);
 
     return null; // This component handles logic only, renders nothing
 }

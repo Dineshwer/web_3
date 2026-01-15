@@ -7,6 +7,8 @@ interface SentinelState {
     setActiveView: (view: 'OVERVIEW' | 'NETWORK' | 'THREATS' | 'SYSTEM') => void;
     isSystemReady: boolean;
     setSystemReady: (ready: boolean) => void;
+    soundEnabled: boolean;
+    toggleSound: () => void;
 }
 
 export const useStore = create<SentinelState>((set) => ({
@@ -16,4 +18,6 @@ export const useStore = create<SentinelState>((set) => ({
     setActiveView: (view) => set({ activeView: view }),
     isSystemReady: false,
     setSystemReady: (ready) => set({ isSystemReady: ready }),
+    soundEnabled: true,
+    toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
 }));

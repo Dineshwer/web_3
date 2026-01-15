@@ -2,9 +2,11 @@
 
 import styles from './Dashboard.module.css';
 import { useStore } from '@/store/useStore';
+import { useSound } from '@/hooks/useSound';
 
 export default function Navigation() {
     const { activeView, setActiveView } = useStore();
+    const { playClick, playHover } = useSound();
 
     const navItems = [
         { id: 'OVERVIEW', icon: '⌖', label: 'Home' },
@@ -19,7 +21,8 @@ export default function Navigation() {
                 <div
                     key={item.id}
                     className={activeView === item.id ? styles.navItemActive : styles.navItem}
-                    onClick={() => setActiveView(item.id)}
+                    onClick={() => { setActiveView(item.id); playClick(); }}
+                    onMouseEnter={() => playHover()}
                     title={item.label}
                 >
                     {item.icon}

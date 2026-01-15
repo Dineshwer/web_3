@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useStore } from '@/store/useStore';
+import { useSound } from '@/hooks/useSound';
 import styles from './HUD.module.css';
 import dashboardStyles from './Dashboard.module.css';
 import Navigation from './Navigation';
@@ -9,11 +10,13 @@ import OperationsPanel from './OperationsPanel';
 import NetworkPanel from './panels/NetworkPanel';
 import ThreatPanel from './panels/ThreatPanel';
 import SystemPanel from './panels/SystemPanel';
+import GlitchText from './effects/GlitchText';
 
 export default function HUD() {
     const [time, setTime] = useState('');
     const [dataStream, setDataStream] = useState<string[]>(['INITIALIZING...']);
-    const { selectedBlock, activeView } = useStore();
+    const { selectedBlock, activeView, soundEnabled, toggleSound } = useStore();
+    const { playClick } = useSound(); // Initializes audio on click
 
     useEffect(() => {
         // Clock
@@ -45,10 +48,27 @@ export default function HUD() {
                     {/* Header */}
                     <div className={styles.header} style={{ width: '100%', marginBottom: 'auto' }}>
                         <div className="pointer-events-auto">
-                            <h1 className={styles.title}>SENTINEL</h1>
+                            <h1 className={styles.title}>
+                                <GlitchText text="SENTINEL" speed={40} delay={500} />
+                            </h1>
                             <div className={styles.subtitle}>SECURE_DASHBOARD // V.3.3.0 // VIEW: {activeView}</div>
                         </div>
                         <div className={styles.panel}>
+                            <button
+                                onClick={() => { toggleSound(); playClick(); }}
+                                style={{
+                                    background: 'transparent',
+                                    border: '1px solid #00f3ff',
+                                    color: soundEnabled ? '#00f3ff' : 'rgba(0, 243, 255, 0.3)',
+                                    padding: '5px 10px',
+                                    cursor: 'pointer',
+                                    marginRight: '20px',
+                                    fontSize: '0.7rem',
+                                    fontFamily: 'inherit'
+                                }}
+                            >
+                                AUDIO: {soundEnabled ? 'ON' : 'OFF'}
+                            </button>
                             <div>SYS.TIME: {time}</div>
                             <div>NET.LATENCY: 12ms</div>
                         </div>

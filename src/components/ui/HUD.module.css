@@ -22,6 +22,8 @@
     border-bottom: 1px solid rgba(0, 243, 255, 0.3);
     padding-bottom: 1rem;
     background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.05), transparent);
+    pointer-events: auto;
+    /* Ensure clickable */
 }
 
 .title {
